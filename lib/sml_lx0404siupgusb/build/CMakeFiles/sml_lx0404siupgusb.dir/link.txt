@@ -1,0 +1,2 @@
+C:\msys64\ucrt64\bin\ar.exe qc libsml_lx0404siupgusb.a CMakeFiles/sml_lx0404siupgusb.dir/src/sml_lx0404siupgusb.c.obj
+C:\msys64\ucrt64\bin\ranlib.exe libsml_lx0404siupgusb.a
