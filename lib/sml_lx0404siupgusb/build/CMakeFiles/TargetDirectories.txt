@@ -1,4 +1,0 @@
-C:/Users/mukai/rainbow/lib/sml_lx0404siupgusb/build/CMakeFiles/sml_lx0404siupgusb.dir
-C:/Users/mukai/rainbow/lib/sml_lx0404siupgusb/build/CMakeFiles/test.dir
-C:/Users/mukai/rainbow/lib/sml_lx0404siupgusb/build/CMakeFiles/edit_cache.dir
-C:/Users/mukai/rainbow/lib/sml_lx0404siupgusb/build/CMakeFiles/rebuild_cache.dir
