@@ -20,10 +20,11 @@ int test(TestCase cases[], size_t length)
 {
     int index = -1;
 
+    SML_LX0404SIUPGUSBNullDigitalOutput *anode = sml_lx0404siupgusb_null_digital_output_new();
     AnalogOutputMock *red = analog_output_mock_new(0);
     AnalogOutputMock *green = analog_output_mock_new(0);
     AnalogOutputMock *blue = analog_output_mock_new(0);
-    SML_LX0404SIUPGUSB *led = sml_lx0404siupgusb_new((SML_LX0404SIUPGUSBAnalogOutputInterface *)red, (SML_LX0404SIUPGUSBAnalogOutputInterface *)green, (SML_LX0404SIUPGUSBAnalogOutputInterface *)blue);
+    SML_LX0404SIUPGUSB *led = sml_lx0404siupgusb_new((SML_LX0404SIUPGUSBDigitalOutputInterface *)anode, (SML_LX0404SIUPGUSBAnalogOutputInterface *)red, (SML_LX0404SIUPGUSBAnalogOutputInterface *)green, (SML_LX0404SIUPGUSBAnalogOutputInterface *)blue);
     assert(led != NULL);
     assert(red->value == UINT16_MAX);
     assert(green->value == UINT16_MAX);
@@ -53,6 +54,8 @@ cleanup:
     green = NULL;
     analog_output_mock_delete(red);
     red = NULL;
+    sml_lx0404siupgusb_null_digital_output_delete(anode);
+    anode = NULL;
 
     return index;
 }

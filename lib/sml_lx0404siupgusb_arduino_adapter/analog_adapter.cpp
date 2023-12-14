@@ -1,12 +1,10 @@
 #include "sml_lx0404siupgusb_arduino_adapter.h"
 
 #include <assert.h>
-#include <stdint.h>
-#include <stdlib.h>
 
-static void sml_lx0404siupgusb_arduino_adapter_write(SML_LX0404SIUPGUSBAnalogOutputInterface *parent, const uint16_t value)
+static void sml_lx0404siupgusb_arduino_analog_adapter_write(SML_LX0404SIUPGUSBAnalogOutputInterface *parent, const uint16_t value)
 {
-    SML_LX0404SIUPGUSBArduinoAdapter *self = (SML_LX0404SIUPGUSBArduinoAdapter *)parent;
+    SML_LX0404SIUPGUSBArduinoAnalogAdapter *self = (SML_LX0404SIUPGUSBArduinoAnalogAdapter *)parent;
     if (self == NULL)
     {
         return;
@@ -16,7 +14,7 @@ static void sml_lx0404siupgusb_arduino_adapter_write(SML_LX0404SIUPGUSBAnalogOut
     analogWrite(self->pin, val);
 }
 
-SML_LX0404SIUPGUSBArduinoAdapter *sml_lx0404siupgusb_arduino_adapter_new(const pin_size_t pin, const int resolution)
+SML_LX0404SIUPGUSBArduinoAnalogAdapter *sml_lx0404siupgusb_arduino_analog_adapter_new(const pin_size_t pin, const int resolution)
 {
     // Since analogWrite is defined to take int as an argument, the 31-bit limit would be fine.
     // Aside from whether an Arduino board with 31-bit analogWrite exists.
@@ -26,13 +24,13 @@ SML_LX0404SIUPGUSBArduinoAdapter *sml_lx0404siupgusb_arduino_adapter_new(const p
         return NULL;
     }
 
-    SML_LX0404SIUPGUSBArduinoAdapter *self = (SML_LX0404SIUPGUSBArduinoAdapter *)malloc(sizeof(SML_LX0404SIUPGUSBArduinoAdapter));
+    SML_LX0404SIUPGUSBArduinoAnalogAdapter *self = (SML_LX0404SIUPGUSBArduinoAnalogAdapter *)malloc(sizeof(SML_LX0404SIUPGUSBArduinoAnalogAdapter));
     if (self == NULL)
     {
         return NULL;
     }
 
-    self->parent.write = sml_lx0404siupgusb_arduino_adapter_write;
+    self->parent.write = sml_lx0404siupgusb_arduino_analog_adapter_write;
 
     self->pin = pin;
     int max_value = (1UL << resolution) - 1;
@@ -42,4 +40,4 @@ SML_LX0404SIUPGUSBArduinoAdapter *sml_lx0404siupgusb_arduino_adapter_new(const p
     return self;
 }
 
-extern inline void sml_lx0404siupgusb_arduino_adapter_delete(SML_LX0404SIUPGUSBArduinoAdapter *self);
+extern inline void sml_lx0404siupgusb_arduino_analog_adapter_delete(SML_LX0404SIUPGUSBArduinoAnalogAdapter *self);
