@@ -42,7 +42,4 @@ SML_LX0404SIUPGUSBArduinoAdapter *sml_lx0404siupgusb_arduino_adapter_new(const p
     return self;
 }
 
-void sml_lx0404siupgusb_arduino_adapter_delete(SML_LX0404SIUPGUSBArduinoAdapter *self)
-{
-    free(self);
-}
+extern inline void sml_lx0404siupgusb_arduino_adapter_delete(SML_LX0404SIUPGUSBArduinoAdapter *self);

@@ -15,37 +15,21 @@ static SML_LX0404SIUPGUSBArduinoAdapter *pwm_green;
 static SML_LX0404SIUPGUSBArduinoAdapter *pwm_blue;
 static SML_LX0404SIUPGUSB *led;
 
-typedef struct RGB16Color
-{
-    uint16_t red;
-    uint16_t green;
-    uint16_t blue;
-} RGB16Color;
-
-static RGB16Color *rainbow_colors[3600];
+static ColorRGB16 *rainbow_colors[3600];
 
 static void precalculate_rainbow_colors()
 {
     for (int hue = 0; hue < 3600; hue++)
     {
-        HSVColor *hsv = hsv_color_new((double)hue / 10, 1.0, 1.0);
+        ColorHSV16 *hsv = color_hsv_16_new(((double)hue / 3600) * UINT16_MAX, UINT16_MAX, UINT16_MAX);
         assert(hsv != NULL);
 
-        RGBColor *rgb = hsv_color_to_rgb(hsv);
+        ColorRGB16 *rgb = color_hsv_16_to_rgb_16(hsv);
         assert(rgb != NULL);
-
-        RGB16Color *rgb16 = (RGB16Color *)malloc(sizeof(RGB16Color));
-        assert(rgb16 != NULL);
-        rgb16->red = (uint16_t)(((double)rgb->red / UINT8_MAX) * UINT16_MAX);
-        rgb16->green = (uint16_t)(((double)rgb->green / UINT8_MAX) * UINT16_MAX);
-        rgb16->blue = (uint16_t)(((double)rgb->blue / UINT8_MAX) * UINT16_MAX);
-
-        rainbow_colors[hue] = rgb16;
-
-        rgb_color_delete(rgb);
-        rgb = NULL;
-        hsv_color_delete(hsv);
+        color_hsv_16_delete(hsv);
         hsv = NULL;
+
+        rainbow_colors[hue] = rgb;
     }
 }
 
@@ -53,8 +37,7 @@ static void rainbow()
 {
     for (size_t i = 0; i < 3600; i++)
     {
-        RGB16Color *rgb = rainbow_colors[i];
-        sml_lx0404siupgusb_set(led, rgb->red, rgb->green, rgb->blue);
+        sml_lx0404siupgusb_set(led, rainbow_colors[i]->red, rainbow_colors[i]->green, rainbow_colors[i]->blue);
         delay(1);
     }
     sml_lx0404siupgusb_off(led);

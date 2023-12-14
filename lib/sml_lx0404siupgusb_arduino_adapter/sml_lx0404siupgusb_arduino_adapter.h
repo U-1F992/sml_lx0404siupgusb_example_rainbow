@@ -12,6 +12,9 @@ typedef struct SML_LX0404SIUPGUSBArduinoAdapter
 } SML_LX0404SIUPGUSBArduinoAdapter;
 
 SML_LX0404SIUPGUSBArduinoAdapter *sml_lx0404siupgusb_arduino_adapter_new(const pin_size_t pin, const int resolution);
-void sml_lx0404siupgusb_arduino_adapter_delete(SML_LX0404SIUPGUSBArduinoAdapter *self);
+inline void sml_lx0404siupgusb_arduino_adapter_delete(SML_LX0404SIUPGUSBArduinoAdapter *self)
+{
+    free(self);
+}
 
 #endif
