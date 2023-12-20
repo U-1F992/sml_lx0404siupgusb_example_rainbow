@@ -6,11 +6,12 @@
 
 static const int ANALOG_WRITE_RESOLUTION = 16;
 
-static const pin_size_t PIN_RED = 23;
-static const pin_size_t PIN_GREEN = 24;
-static const pin_size_t PIN_BLUE = 25;
+static const pin_size_t PIN_ANODE = 23;
+static const pin_size_t PIN_RED = 24;
+static const pin_size_t PIN_GREEN = 25;
+static const pin_size_t PIN_BLUE = 28;
 
-static SML_LX0404SIUPGUSBNullDigitalOutput *anode;
+static SML_LX0404SIUPGUSBArduinoDigitalAdapter *anode;
 static SML_LX0404SIUPGUSBArduinoAnalogAdapter *pwm_red;
 static SML_LX0404SIUPGUSBArduinoAnalogAdapter *pwm_green;
 static SML_LX0404SIUPGUSBArduinoAnalogAdapter *pwm_blue;
@@ -39,6 +40,7 @@ static void rainbow()
     for (size_t i = 0; i < 3600; i++)
     {
         sml_lx0404siupgusb_set(led, rainbow_colors[i]->red, rainbow_colors[i]->green, rainbow_colors[i]->blue);
+        sml_lx0404siupgusb_on(led);
         delay(1);
     }
     sml_lx0404siupgusb_off(led);
@@ -49,6 +51,7 @@ static void blink_red_twice()
     for (int _ = 0; _ < 2; _++)
     {
         sml_lx0404siupgusb_set(led, SML_LX0404SIUPGUSB_ON, SML_LX0404SIUPGUSB_OFF, SML_LX0404SIUPGUSB_OFF);
+        sml_lx0404siupgusb_on(led);
         delay(100);
         sml_lx0404siupgusb_off(led);
         delay(100);
@@ -60,6 +63,7 @@ static void blink_green_twice()
     for (int _ = 0; _ < 2; _++)
     {
         sml_lx0404siupgusb_set(led, SML_LX0404SIUPGUSB_OFF, SML_LX0404SIUPGUSB_ON, SML_LX0404SIUPGUSB_OFF);
+        sml_lx0404siupgusb_on(led);
         delay(100);
         sml_lx0404siupgusb_off(led);
         delay(100);
@@ -71,6 +75,7 @@ static void blink_blue_twice()
     for (int _ = 0; _ < 2; _++)
     {
         sml_lx0404siupgusb_set(led, SML_LX0404SIUPGUSB_OFF, SML_LX0404SIUPGUSB_OFF, SML_LX0404SIUPGUSB_ON);
+        sml_lx0404siupgusb_on(led);
         delay(100);
         sml_lx0404siupgusb_off(led);
         delay(100);
@@ -79,7 +84,9 @@ static void blink_blue_twice()
 
 void setup_sml_lx0404siupgusb()
 {
-    anode = sml_lx0404siupgusb_null_digital_output_new();
+    pinMode(PIN_ANODE, OUTPUT_8MA);
+    digitalWrite(PIN_ANODE, LOW);
+    anode = sml_lx0404siupgusb_arduino_digital_adapter_new(PIN_ANODE);
     assert(anode != NULL);
 
     pinMode(PIN_RED, OUTPUT);
@@ -115,7 +122,6 @@ void setup()
 
 void loop()
 {
-    sml_lx0404siupgusb_on(led);
     rainbow();
     delay(250);
 
